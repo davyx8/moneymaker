@@ -6,6 +6,9 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
+from django.contrib.auth.models import User
+from models import Queries
+import scripts
 
 def home(request):
     """Renders the home page."""
@@ -48,6 +51,21 @@ def about(request):
         })
     )
 
+'''
+Looks up news items based on the keywords stored in the database
+'''
+
 def search(request):
-    # sets up a news search for an event
-    return render(request, 'app/search.html')
+    
+    # get all relevent data from database and add search terms to list
+    searches = Queries.objects.filter(username=request.user)
+    keywords = []
+    for key in searches:
+        keywords.append(str(key.query))
+
+    # extract relevant titles from the internet
+    results = scripts.extractLinksTitles(keywords)
+    links, titles = results[0], results[1]
+    results = zip(links, titles)
+    return render(request, 'app/search.html', 
+                  {'results': results})
