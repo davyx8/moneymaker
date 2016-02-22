@@ -1,17 +1,15 @@
-import json
-import re
-import urllib
 import urllib2
-from urllib import urlopen
 import feedparser
 keywords=['Yahoo', 'Japan', 'Clinton']
-from urllib2 import urlopen
+
 diffbot= 'http://api.diffbot.com/v3/article?token=b79f68d0e3a98c014cae87196036f80b&url='
-words={'S&P'}
 d = feedparser.parse('http://mf.feeds.reuters.com/reuters/UKBankingFinancial')
 links=[]
-from urlparse import urlparse
 
+ft = 'http://www.ft.com/rss/companies/financials'
+fth =feedparser.parse('http://mf.feeds.reuters.com/reuters/UKBankingFinancial')
+print fth
+print ft
 
 for x in d['entries']:
     itr= x['links'][0]['href']
